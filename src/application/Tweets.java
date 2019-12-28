@@ -1,3 +1,4 @@
+package application;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -70,6 +71,7 @@ public class Tweets {
 		this.rt = rt;
 	}
 
+	//Methode toString qui affiche les attribut d'un objet Tweet
 	@Override
 	public String toString() {
 		
