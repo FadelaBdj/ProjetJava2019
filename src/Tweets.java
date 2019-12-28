@@ -1,10 +1,11 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Tweets {
 
 	
 	private double idTweet; //Identifiant du tweet
-	private String idUser; //Identifiant de l'utilisateur 
+	private String idUser, idUserRt; //Identifiant de l'utilisateur et de l'utilisateur retweeté
 	private LocalDate dateTweet; //Date du tweet
 	private String content; //Contenu du tweet
 	private boolean rt; //Indique si le tweet est un retweet
@@ -35,6 +36,15 @@ public class Tweets {
 	private void setIdUser(String idUser) {
 		this.idUser = idUser;
 	}
+	
+
+	private String getIdUserRt() {
+		return idUserRt;
+	}
+
+	private void setIdUserRt(String idUserRt) {
+		this.idUserRt = idUserRt;
+	}
 
 	private LocalDate getDateTweet() {
 		return dateTweet;
@@ -59,6 +69,25 @@ public class Tweets {
 	private void setRt(boolean rt) {
 		this.rt = rt;
 	}
+
+	@Override
+	public String toString() {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDateTime = getDateTweet().format(formatter);
+        
+        String result =  "Id Tweet : " + getIdTweet() + "\n";
+        result +=  "Utilisateur : " + getIdUser() + "\n";
+        result +=  "Date du tweet : " + formattedDateTime + "\n";
+        result +=  "Contenu du tweet : " + getContent() + "\n";
+        if(isRt()) {
+        	result +=  "Utilisateur retweeté : " + getIdUserRt() + "\n";
+        }
+        
+		return result;
+	}
+	
+	
 	
 	
 	
