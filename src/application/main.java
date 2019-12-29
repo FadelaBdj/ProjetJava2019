@@ -7,14 +7,29 @@ import java.util.Arrays;
 
 public class main {
 	
-	private static Tweets t;
+	private static BaseDeTweets t;
 	
 	public static void main(String[] args) {
 		
-		/*BaseDeTweets t = new BaseDeTweets();
+		t = new BaseDeTweets();
 		t.initialise();
-		t.lire("climat.txt");*/
+		t.read("climat.txt");
 		//t.afficher();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// TESTS CREATION OBJET TWEET ET BASE DE NEWS AVEC BON FORMAT DE DATE
 		
 		String tweet = "1625634634	user_id	2019-09-02 09:40:46.497980	contenu du tweet	user_rt";
 	    String[] data = tweet.split("\t");
@@ -34,7 +49,6 @@ public class main {
         String idUserRt = data[4];
         
        
-        //Tweets ts = new Tweets(1625634634, "user_id", formatDateTime, "contenu du tweet", "user_rt");
         Tweets t = new Tweets(idTweet, idUser, formatDateTime, content, idUserRt);
         System.out.println(t.isRt());
         System.out.println(t.toString());
