@@ -13,7 +13,8 @@ public class main {
 		
 		t = new BaseDeTweets();
 		t.initialise();
-		t.read("climat.txt");
+		t.lire("climat.txt");
+		//t.recherche("fhjgfjfgj");
 		//t.afficher();
 		
 		
@@ -30,7 +31,7 @@ public class main {
 		
 		
 		// TESTS CREATION OBJET TWEET ET BASE DE NEWS AVEC BON FORMAT DE DATE
-		
+		/*
 		String tweet = "1625634634	user_id	2019-09-02 09:40:46.497980	contenu du tweet	user_rt";
 	    String[] data = tweet.split("\t");
         System.out.println(Arrays.toString(data));
@@ -57,7 +58,7 @@ public class main {
         bdt.initialise();
         bdt.ajoute(t);
         bdt.afficher();
-
+		*/
 	}
 	
 	

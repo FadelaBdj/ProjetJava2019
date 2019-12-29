@@ -56,34 +56,42 @@ public class BaseDeTweets {
 	//Sortie : Tous les tweets contenants cette chaîne
 	public void recherche(String research) {
 		
-		String[] researchSplit = research.split(" "); //"false"
+		//On récupère les mots qui constituent la recherche dans un tableau
+		String[] mots = research.split(" "); 
 		Pattern p;
 		Matcher m;
-		int trouve;
-		int len = researchSplit.length; //len = 1
-		int res = 0;
+		int trouve; //Stock le nombre de mots de la recherche qui sont trouvés dans un tweet
+		int len = mots.length; //Nombre de mots de la recherche
+		int res = 0; 
 		
 		Iterator it = t.iterator();
 		
+		//On parcourt le TreeSet afin de regarder pour chaque Tweet si un mot de la recherche est présent
 		while (it.hasNext())
 		{
-			News n = (News)(it.next());
-			trouve = 0; //initialisation de trouve à 0
-			for(int i = 0; i < len; i++) { // de 0 à 1 exclu : 1 fois
-				p = Pattern.compile(researchSplit[i]); //chaine à chercher : "false"
-				m = p.matcher(n.toString()); //recherche de "false" dans la News
+			Tweets n = (Tweets)(it.next());
+			trouve = 0; //Initialisation de trouve à 0
+			//Pour tous les mots de la recherche (du tableau mots)
+			for(int i = 0; i < len; i++) {  
+				p = Pattern.compile(mots[i]); 
+				m = p.matcher(n.toString()); 
+				//Si on trouve le mot on incrémente trouve
 				if (m.find()) {
-					trouve += 1; //trouve = 1
+					trouve += 1; 
+				//Sinon on incrémente res
 				} else {
-					res += 1; //res = 0
+					res += 1;
 				}
 			}
-			if (trouve == len) { //trouve = 1 = len
+			//Si tous les mots de la recherche sont présents dans le tweet
+			if (trouve == len) { 
+				//On affiche le tweet comme résultat de la recherche
 				System.out.println(n);
 			}
 		}
-		
+		//Si aucun mot n'a été trouvé cad si res est égal au nombre de mots
 		if(res == t.size()) {
+			//On affiche "0 résultats"
 			System.out.println("O résultat");
 		}
 				
@@ -167,9 +175,9 @@ public class BaseDeTweets {
 	            //On l'ajoute à la base de tweets
 	            bdt.initialise();
 	            bdt.ajoute(t);
-	            bdt.afficher();
-	        	
+	            //bdt.afficher();
 	        }
+	        //bdt.afficher();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
