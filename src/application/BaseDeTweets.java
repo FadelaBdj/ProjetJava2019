@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BaseDeTweets {
 
@@ -49,9 +51,61 @@ public class BaseDeTweets {
 
 	}
 	
-	//Affichage d'un tweet en particulier
+	//Rechercher dans la base
+	//Entrée : une chaîne de caractères
+	//Sortie : Tous les tweets contenants cette chaîne
+	public void recherche(String research) {
+		
+		String[] researchSplit = research.split(" "); //"false"
+		Pattern p;
+		Matcher m;
+		int trouve;
+		int len = researchSplit.length; //len = 1
+		int res = 0;
+		
+		Iterator it = t.iterator();
+		
+		while (it.hasNext())
+		{
+			News n = (News)(it.next());
+			trouve = 0; //initialisation de trouve à 0
+			for(int i = 0; i < len; i++) { // de 0 à 1 exclu : 1 fois
+				p = Pattern.compile(researchSplit[i]); //chaine à chercher : "false"
+				m = p.matcher(n.toString()); //recherche de "false" dans la News
+				if (m.find()) {
+					trouve += 1; //trouve = 1
+				} else {
+					res += 1; //res = 0
+				}
+			}
+			if (trouve == len) { //trouve = 1 = len
+				System.out.println(n);
+			}
+		}
+		
+		if(res == t.size()) {
+			System.out.println("O résultat");
+		}
+				
+	}
+	
+	//Affiche les tweets avec leurs numéros pour pouvoir les supprimer par exemple
+	public void afficher_num() {
+		
+		Iterator it = t.iterator();
+		int i = 1;
+		
+		while (it.hasNext())
+		{
+			Tweets t = (Tweets)(it.next());
+			System.out.println(i + " : " + t.getContent());
+			i++;
+		}
+
+	}
 	
 	//Supprimer un tweet de la base
+	//Entrée : numéro du tweet à supprimer 
 	public void supprimer(double num) {
 		
 		Iterator it = t.iterator();
@@ -75,7 +129,7 @@ public class BaseDeTweets {
 	}
 	
 	//Chargement du fichier dans un objet BaseDeTweets
-	public void read(String file) {
+	public void lire(String file) {
 		
 		BaseDeTweets bdt = new BaseDeTweets(); //Base qui contiendra les tweets du fichier
 		String line; //Pour parcourir les lignes du fichier
