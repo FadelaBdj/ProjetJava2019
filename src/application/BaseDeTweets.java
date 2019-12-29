@@ -1,5 +1,12 @@
 package application;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -54,8 +61,30 @@ public class BaseDeTweets {
 		}
 	}
 	
-	
-	
+	//Chargement du fichier dans un objet BaseDeTweets
+	public void lire(String file) {
+		
+		BaseDeTweets bdt = new BaseDeTweets();
+		
+		FileReader r;
+		try {
+			r = new FileReader(file);
+			int c;
+			while ((c = r.read()) != -1) {
+				//double idTweet = r.toString()
+				//Tweets tweet = new Tweets();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+		
 	
 	
 	

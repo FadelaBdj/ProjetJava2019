@@ -1,73 +1,80 @@
 package application;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Tweets {
+public class Tweets implements Comparable, Serializable {
 
 	
 	private double idTweet; //Identifiant du tweet
 	private String idUser, idUserRt; //Identifiant de l'utilisateur et de l'utilisateur retweeté
-	private LocalDate dateTweet; //Date du tweet
+	private LocalDateTime dateTweet; //Date du tweet
 	private String content; //Contenu du tweet
-	private boolean rt; //Indique si le tweet est un retweet
+	private boolean rt = false; //Indique si le tweet est un retweet
 	
-	public Tweets(double idTweet, String idUser, LocalDate dateTweet, String content, boolean rt) {
+	public Tweets(double idTweet, String idUser, LocalDateTime dateTweet, String content, String idUserRt) {
 		
 		setIdTweet(idTweet);
 		setIdUser(idUser);
 		setDateTweet(dateTweet);
 		setContent(content);
+		setIdUserRt(idUserRt);
+		if(idUserRt != null) {
+			rt = true;
+		}
 		
 	}
 
 	//Accesseurs et mutateurs pour avoir accès aux attributs 
 	
-	private double getIdTweet() {
+	public double getIdTweet() {
 		return idTweet;
 	}
 
-	private void setIdTweet(double idTweet) {
+	public void setIdTweet(double idTweet) {
 		this.idTweet = idTweet;
 	}
 
-	private String getIdUser() {
+	public String getIdUser() {
 		return idUser;
 	}
 
-	private void setIdUser(String idUser) {
+	public void setIdUser(String idUser) {
 		this.idUser = idUser;
 	}
 	
 
-	private String getIdUserRt() {
+	public String getIdUserRt() {
 		return idUserRt;
 	}
 
-	private void setIdUserRt(String idUserRt) {
+	public void setIdUserRt(String idUserRt) {
 		this.idUserRt = idUserRt;
 	}
 
-	private LocalDate getDateTweet() {
+	public LocalDateTime getDateTweet() {
 		return dateTweet;
 	}
 
-	private void setDateTweet(LocalDate dateTweet) {
+	public void setDateTweet(LocalDateTime dateTweet) {
 		this.dateTweet = dateTweet;
 	}
 
-	private String getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	private void setContent(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
+	
 
-	private boolean isRt() {
+	public boolean isRt() {
 		return rt;
 	}
 
-	private void setRt(boolean rt) {
+	public void setRt(boolean rt) {
 		this.rt = rt;
 	}
 
@@ -75,14 +82,14 @@ public class Tweets {
 	@Override
 	public String toString() {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = getDateTweet().format(formatter);
         
         String result =  "Id Tweet : " + getIdTweet() + "\n";
         result +=  "Utilisateur : " + getIdUser() + "\n";
         result +=  "Date du tweet : " + formattedDateTime + "\n";
         result +=  "Contenu du tweet : " + getContent() + "\n";
-        if(isRt()) {
+        if(rt) {
         	result +=  "Utilisateur retweeté : " + getIdUserRt() + "\n";
         }
         
@@ -90,7 +97,21 @@ public class Tweets {
 	}
 	
 	
-	
+	//Interface comparable
+	//Implémentation de la methode compareTo pour pouvoir ranger les tweets dans le treeSet
+	public int compareTo(Object o) {
+		
+		Tweets a_comparer = (Tweets)o;
+		String tweet_a_comparer = Double.toString(a_comparer.getIdTweet());
+		if(Double.toString(getIdTweet()).compareTo(tweet_a_comparer) < 0)
+			return -1;
+		else if (Double.toString(getIdTweet()).compareTo(tweet_a_comparer) > 0)
+			return 1;
+		else
+			if (getDateTweet().compareTo(a_comparer.getDateTweet())<0) return -1;
+            else if (getDateTweet().compareTo(a_comparer.getDateTweet())>0) return 1;
+            else return 0;
+	}
 	
 	
 }
