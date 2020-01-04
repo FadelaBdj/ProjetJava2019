@@ -31,6 +31,11 @@ public class BaseDeTweets {
 		this.t = ts;
 	}
 	
+	
+	public TreeSet<Tweets> getT() {
+		return t;
+	}
+
 	//Methode d'ajout d'un Tweets dans la base
 	public void ajoute(Tweets n) {
 			
@@ -56,13 +61,16 @@ public class BaseDeTweets {
 	//Sortie : Tous les tweets contenants cette chaîne
 	public void recherche(String research) {
 		
+		//On passe la recherche en majuscule
+		research = research.toUpperCase();
 		//On récupère les mots qui constituent la recherche dans un tableau
 		String[] mots = research.split(" "); 
 		Pattern p;
 		Matcher m;
+		int n; 
 		int trouve; //Stock le nombre de mots de la recherche qui sont trouvés dans un tweet
 		int len = mots.length; //Nombre de mots de la recherche
-		int res = 0; 
+		int res = 0; //Compte les tweets qui ne contiennent pas la recherche
 		
 		Iterator it = t.iterator();
 		
@@ -74,27 +82,26 @@ public class BaseDeTweets {
 			//Pour tous les mots de la recherche (du tableau mots)
 			for(int i = 0; i < len; i++) {  
 				p = Pattern.compile(mots[i]); 
-				m = p.matcher(n.toString()); 
+				m = p.matcher(n.toString().toUpperCase()); 
 				//Si on trouve le mot on incrémente trouve
 				if (m.find()) {
 					trouve += 1; 
-				//Sinon on incrémente res
-				} else {
-					res += 1;
 				}
 			}
 			//Si tous les mots de la recherche sont présents dans le tweet
 			if (trouve == len) { 
 				//On affiche le tweet comme résultat de la recherche
 				System.out.println(n);
+				//Sinon on incrémente res
+			} else {
+				res++;
 			}
 		}
-		//Si aucun mot n'a été trouvé cad si res est égal au nombre de mots
+		//Si aucun mot n'a été trouvé cad si res est égal au nombre de tweets du TreeSet
 		if(res == t.size()) {
 			//On affiche "0 résultats"
 			System.out.println("O résultat");
-		}
-				
+		}	
 	}
 	
 	//Affiche les tweets avec leurs numéros pour pouvoir les supprimer par exemple
@@ -136,11 +143,41 @@ public class BaseDeTweets {
 		}
 	}
 	
-	//Chargement du fichier dans un objet BaseDeTweets
-	public void lire(String file) {
+	//Retourne nombre de tweets de la base
+	public int nb_tweets() {
+		return t.size();
+	}
+	
+	//Retourne les n utilisateurs les plus populaires
+	public String populaires(int n) {
+		Iterator it = t.iterator();
+		double i = 1;
+		//On parcourt le TreeSet tant qu'il y'a un élément
+		//Si i vaut -1 cela veut dire que l'élément a été supprimé donc on sort de la boucle
+		while (it.hasNext() && i != -1)
+		{
+			Tweets tweet = (Tweets)(it.next());
+			//On suprime le tweet qui porte le numéro fournit en paramètre
+			if (i == num) {
+				//0n supprime le tweet du TreeSet
+				t.remove(tweet);
+				//i prend la valeur -1 pour pouvoir sortir de la bocule
+				i = -1;
+			} else {
+				//Incrémentation
+				i++;
+			}
+		}
+	}
+	
+	//Chargement du fichier texte dans un objet BaseDeTweets
+	public BaseDeTweets lire(String file) {
 		
 		BaseDeTweets bdt = new BaseDeTweets(); //Base qui contiendra les tweets du fichier
 		String line; //Pour parcourir les lignes du fichier
+		
+		//Initialisation de la base
+		bdt.initialise();
 		try {
 			FileReader r = new FileReader(file); 
 			BufferedReader bufferreader = new BufferedReader(r);
@@ -149,13 +186,13 @@ public class BaseDeTweets {
 			//On ajoute chaque objet créé à la base bdt
 			//Ligne 84 : https://stackoverflow.com/questions/33892453/how-to-read-line-by-line-by-using-filereader 
 	        while ((line = bufferreader.readLine()) != null) {
-	        	
+	        	//System.out.println(line);
 	        	//On sépare les différents éléments du Tweet et on les stocke dans le tableau elt
 	        	
 	        	String[] elt = line.split("\t");
 	        	
 	            //On stock chaque élément de elt dans les variables correspondantes pour pouvoir créer l'objet Tweets
-	        	Double idTweet = Double.parseDouble(elt[0]);
+	        	String idTweet = elt[0];
 	            String idUser = elt[1];
 	            
 	            //On stock la date dans un autre tableau de la même manière que précédemment pour pouvoir supprimer les décimales des secondes
@@ -167,29 +204,74 @@ public class BaseDeTweets {
 	            LocalDateTime formatDateTime = LocalDateTime.parse(d, formatter);
 	            
 	            String content = elt[3];
-	            String idUserRt = elt[4];
+	            String idUserRt = "";
+	            //Si le tweet est un retweet alors on récupère l'id de l'utilisateur retweeté
+	            if(elt.length > 4) {
+	            	idUserRt = elt[4];
+	            }
+	            
 	            
 	            //On instancie un nouvel objet Tweets avec les attributs que l'on vient de récupérer
 	            Tweets t = new Tweets(idTweet, idUser, formatDateTime, content, idUserRt);
-	           
+	            //System.out.println(t);
 	            //On l'ajoute à la base de tweets
-	            bdt.initialise();
 	            bdt.ajoute(t);
-	            //bdt.afficher();
+	            
 	        }
-	        //bdt.afficher();
+	        return bdt;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return bdt;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return bdt;
 		}
 		
 		
 	}
 		
+	//Enregistrer la base dans un fichier objet
+	public void sauvegarder_bdt(String file) {
+		
+		try {
+				FileOutputStream w = new FileOutputStream(file);
+				ObjectOutputStream o = new ObjectOutputStream(w);
+				o.writeObject(t);
+				o.close();
+				w.close();
+			} catch (Exception e)
+			{ 
+				System.out.println("Erreur d’IO");
+			}
+	}
 	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	}
+	
+	
+	//Récupérer la base de Tweets d'un fichier objet
+	public TreeSet<Tweets> lire_bdt(String file) {
+		TreeSet<Tweets> bdt = null;
+		try {
+				FileInputStream r = new FileInputStream(file);
+				ObjectInputStream o = new ObjectInputStream(r);
+				Object t = o.readObject();
+				bdt = (TreeSet<Tweets>)t;
+				o.close();
+				r.close();
+				return bdt;
+			} catch (Exception e) {
+				System.out.println("Erreur d'IO");
+				return bdt;
+			}
+	}
+	
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+	}
 	
 	
 	
