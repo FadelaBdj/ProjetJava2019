@@ -34,6 +34,14 @@ public class main {
 		//t.recherche("_miss_ives_");
 		System.out.println("---------- NB DE TWEETS -----------");
 		System.out.println("Il y a " + t.nb_tweets() + " tweets dans la base");
+		System.out.println("---------- TABLEAU -----------");
+		System.out.println(t.populaires());
+		/*
+		int[] occ = {6,7,2,5,3};
+		Arrays.sort(occ);
+		for(int i = 1; i < occ.length; i++) {
+			System.out.println(occ[i]);
+		}*/
 		
 		
 		

@@ -151,15 +151,75 @@ public class BaseDeTweets {
 	//Retourne le tableau des 3 utilisateurs les plus populaires (qui sont le plus retweetés)
 	public String populaires() {
 		
-		String idUserRt = "";
+		String idUserRt = ""; //Stock tous les utilisateurs retweetés
+		int[] occ = {}; //Tableau qui stock des occurrence de chaque utilisateurs 
 		
 		Iterator it = t.iterator();
 	
+		//On parcourt le TreeSet pour récupérer les utilisateurs retweeté et les stocker dans une chaîne de caractères
 		while (it.hasNext()) {
 			Tweets t = (Tweets)(it.next());
-			idUserRt += t.getIdUserRt();
+			if(t.isRt()) {
+				idUserRt += t.getIdUserRt();
+				idUserRt += " ";
+			}
+			
 		}
+		//On passe la chaîne des utilisateurs retweetés en majuscule
+		idUserRt = idUserRt.toUpperCase();
+		//On créer un tableau contenant les utilisateurs 
+		String[] userRtTab = idUserRt.split(" ");
+		String max = "";
+		int k = 0;
+		String[] troisPopulaires = {};
+		max = userRtTab[0];
+		while(k < 3) {
+			for(int i = 0; i < userRtTab.length; i++) { 
+				//Si l'élement du tableau est égal au mot passé en paramètre
+				//occ[i] = nb_occurrence(userRtTab, userRtTab[i]);
+				if((nb_occurrence(userRtTab, max) < nb_occurrence(userRtTab, userRtTab[i])) && (userRtTab[i].compareTo(troisPopulaires[k]) != 0)) {
+					max = userRtTab[i];
+				}
+			}
+			troisPopulaires[k] = max;
+		}
+		
+		
+		/*int maxx = occ[1];
+		int indice = 0;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < occ.length; j++) { 
+				if(occ[j] > maxx) {
+					maxx = occ[j];
+				}
+			}
+		}*/
+		
+		//Tri tableau
+		 Arrays.sort(occ);
+		 //on retourne les 3 première
+		/* int[] troisPopulaires = {};
+		 troisPopulaires[0] = occ[0];
+		 troisPopulaires[1] = occ[2];
+		 troisPopulaires[2] = occ[3]; */
+		 return max;
+	}
 	
+	//Compte le nombre de fois qu'une chaîne de caractères apparraît dans un tableau de chaînes de caractères
+	public int nb_occurrence(String[] s, String mot) {
+		
+		int occurrence = 0; //occurrence du mot passé en paramètre dans la chaîne passée en paramètre
+		
+		//On parcourt le tableau
+		for(int i = 0; i < s.length; i++) { 
+			//Si l'élement du tableau est égal au mot passé en paramètre
+			if(s[i].compareTo(mot) == 0) {
+				//On incrémente occurrence
+				occurrence += 1;
+			}
+		}
+		//On retourne l'occurence de mot dans le tableau s
+		return occurrence;
 	}
 	
 	//Chargement du fichier texte dans un objet BaseDeTweets
