@@ -77,12 +77,12 @@ public class BaseDeTweets {
 		//On parcourt le TreeSet afin de regarder pour chaque Tweet si un mot de la recherche est présent
 		while (it.hasNext())
 		{
-			Tweets n = (Tweets)(it.next());
+			Tweets t = (Tweets)(it.next());
 			trouve = 0; //Initialisation de trouve à 0
 			//Pour tous les mots de la recherche (du tableau mots)
 			for(int i = 0; i < len; i++) {  
 				p = Pattern.compile(mots[i]); 
-				m = p.matcher(n.toString().toUpperCase()); 
+				m = p.matcher(t.toString().toUpperCase()); 
 				//Si on trouve le mot on incrémente trouve
 				if (m.find()) {
 					trouve += 1; 
@@ -91,7 +91,7 @@ public class BaseDeTweets {
 			//Si tous les mots de la recherche sont présents dans le tweet
 			if (trouve == len) { 
 				//On affiche le tweet comme résultat de la recherche
-				System.out.println(n);
+				System.out.println(t);
 				//Sinon on incrémente res
 			} else {
 				res++;
@@ -148,26 +148,18 @@ public class BaseDeTweets {
 		return t.size();
 	}
 	
-	//Retourne les n utilisateurs les plus populaires
-	public String populaires(int n) {
+	//Retourne le tableau des 3 utilisateurs les plus populaires (qui sont le plus retweetés)
+	public String populaires() {
+		
+		String idUserRt = "";
+		
 		Iterator it = t.iterator();
-		double i = 1;
-		//On parcourt le TreeSet tant qu'il y'a un élément
-		//Si i vaut -1 cela veut dire que l'élément a été supprimé donc on sort de la boucle
-		while (it.hasNext() && i != -1)
-		{
-			Tweets tweet = (Tweets)(it.next());
-			//On suprime le tweet qui porte le numéro fournit en paramètre
-			if (i == num) {
-				//0n supprime le tweet du TreeSet
-				t.remove(tweet);
-				//i prend la valeur -1 pour pouvoir sortir de la bocule
-				i = -1;
-			} else {
-				//Incrémentation
-				i++;
-			}
+	
+		while (it.hasNext()) {
+			Tweets t = (Tweets)(it.next());
+			idUserRt += t.getIdUserRt();
 		}
+	
 	}
 	
 	//Chargement du fichier texte dans un objet BaseDeTweets
