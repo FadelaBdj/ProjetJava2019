@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -149,10 +150,9 @@ public class BaseDeTweets {
 	}
 	
 	//Retourne le tableau des 3 utilisateurs les plus populaires (qui sont le plus retweetés)
-	public String populaires() {
+	public ArrayList populaires() {
 		
-		String idUserRt = ""; //Stock tous les utilisateurs retweetés
-		int[] occ = {}; //Tableau qui stock des occurrence de chaque utilisateurs 
+		ArrayList<String> userRtTab = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
 		
 		Iterator it = t.iterator();
 	
@@ -160,65 +160,63 @@ public class BaseDeTweets {
 		while (it.hasNext()) {
 			Tweets t = (Tweets)(it.next());
 			if(t.isRt()) {
-				idUserRt += t.getIdUserRt();
-				idUserRt += " ";
+				userRtTab.add(t.getIdUserRt().toUpperCase());
 			}
-			
 		}
-		//On passe la chaîne des utilisateurs retweetés en majuscule
-		idUserRt = idUserRt.toUpperCase();
-		//On créer un tableau contenant les utilisateurs 
-		String[] userRtTab = idUserRt.split(" ");
-		String max = "";
+		System.out.println(userRtTab);
+		String max; //Chaîne de caractète qui stockera l'utilisateur qui apparaît le plus de fois dans le tableau UserRtTab
+		ArrayList<String> populaires = new ArrayList<String>(); //Stock les trois utilisateurs les plus populaires
+		//Pour éviter les erreurs de liste nulle on remplie la liste de vide
+		for(int c = 0; c < userRtTab.size(); c++) {
+			populaires.add("");
+		}
+		System.out.println(populaires);
 		int k = 0;
-		String[] troisPopulaires = {};
-		max = userRtTab[0];
-		while(k < 3) {
-			for(int i = 0; i < userRtTab.length; i++) { 
-				//Si l'élement du tableau est égal au mot passé en paramètre
-				//occ[i] = nb_occurrence(userRtTab, userRtTab[i]);
-				if((nb_occurrence(userRtTab, max) < nb_occurrence(userRtTab, userRtTab[i])) && (userRtTab[i].compareTo(troisPopulaires[k]) != 0)) {
-					max = userRtTab[i];
+		while((k < userRtTab.size())) {
+			//On supprime l'utilisateur du tableau si il est déja compté parmi les plus populaires (présent dans troisPopulaires)
+			for(int i = 0; i < populaires.size(); i++) { 
+				for(int j = 0; j < userRtTab.size(); j++){
+					//System.out.println(userRtTab);
+					//System.out.println(populaires);
+					if((userRtTab.get(j).toUpperCase()).compareTo(populaires.get(i).toUpperCase()) == 0) {
+						userRtTab.remove(j);
+					}
 				}
 			}
-			troisPopulaires[k] = max;
+			//System.out.println(userRtTab);
+			
+			max = userRtTab.get(0); //max prend la valeur tu premier utilisateur stocké dans le tableau
+			//On parcourt le tableau pour trouver les trois utilisateurs retweetés qui apparaissent le plus 
+			for(int l = 0; l < userRtTab.size(); l++) { 
+				//Si l'utilisateur i a une occurrence supérieure à max 
+				if(nb_occurrence(userRtTab, max) < nb_occurrence(userRtTab, userRtTab.get(l))) {
+					//System.out.println(nb_occurrence(userRtTab, max));
+					//System.out.println(nb_occurrence(userRtTab, userRtTab.get(i)));
+					//max prend la valeur de l'utilisateur i
+					max = userRtTab.get(l);
+				}
+			}
+			populaires.set(k, max);
+			System.out.println("k = "+ k + " populaires = " + populaires);
+			k++;
 		}
-		
-		
-		/*int maxx = occ[1];
-		int indice = 0;
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < occ.length; j++) { 
-				if(occ[j] > maxx) {
-					maxx = occ[j];
-				}
-			}
-		}*/
-		
-		//Tri tableau
-		 Arrays.sort(occ);
-		 //on retourne les 3 première
-		/* int[] troisPopulaires = {};
-		 troisPopulaires[0] = occ[0];
-		 troisPopulaires[1] = occ[2];
-		 troisPopulaires[2] = occ[3]; */
-		 return max;
+		 return populaires;
 	}
 	
-	//Compte le nombre de fois qu'une chaîne de caractères apparraît dans un tableau de chaînes de caractères
-	public int nb_occurrence(String[] s, String mot) {
+	//Compte le nombre de fois qu'une chaîne de caractères apparraît dans un ArrayList de Strings
+	public int nb_occurrence(ArrayList<String> s, String mot) {
 		
 		int occurrence = 0; //occurrence du mot passé en paramètre dans la chaîne passée en paramètre
 		
-		//On parcourt le tableau
-		for(int i = 0; i < s.length; i++) { 
-			//Si l'élement du tableau est égal au mot passé en paramètre
-			if(s[i].compareTo(mot) == 0) {
+		//On parcourt l'ArrayList
+		for(int i = 0; i < s.size(); i++) { 
+			//Si l'élement de la liste est égal au mot passé en paramètre
+			if(s.get(i).compareTo(mot) == 0) {
 				//On incrémente occurrence
 				occurrence += 1;
 			}
 		}
-		//On retourne l'occurence de mot dans le tableau s
+		//On retourne l'occurence de mot dans la liste s
 		return occurrence;
 	}
 	
