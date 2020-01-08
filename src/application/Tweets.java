@@ -12,6 +12,7 @@ public class Tweets implements Comparable, Serializable {
 	private LocalDateTime dateTweet; //Date du tweet
 	private String content; //Contenu du tweet
 	private boolean rt = false; //Indique si le tweet est un retweet
+	private static int cpt = 0;
 	
 	public Tweets(String idTweet, String idUser, LocalDateTime dateTweet, String content, String idUserRt) {
 		
@@ -23,11 +24,19 @@ public class Tweets implements Comparable, Serializable {
 		//On défini la variable rt seulement si on trouve un id d'utilisateur retweeté
 		if(idUserRt != "") {
 			rt = true;
-		}
-		
+		}		
+		cpt++;
 	}
 
 	//Accesseurs et mutateurs pour avoir accès aux attributs 
+	
+	public int getCpt() {
+		return cpt;
+	}
+	
+	/*public void setCpt(int cpt) {
+		this.cpt = cpt;
+	}*/
 	
 	public String getIdTweet() {
 		return idTweet;
@@ -86,7 +95,8 @@ public class Tweets implements Comparable, Serializable {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = getDateTweet().format(formatter);
         
-        String result =  "Id Tweet : " + getIdTweet() + "\n";
+        String result =  "Num : " + getCpt() + "\n";
+        result += "Id Tweet : " + getIdTweet() + "\n";
         result +=  "Utilisateur : " + getIdUser() + "\n";
         result +=  "Date du tweet : " + formattedDateTime + "\n";
         result +=  "Contenu du tweet : " + getContent() + "\n";
