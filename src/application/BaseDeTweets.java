@@ -17,9 +17,13 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class BaseDeTweets {
 
 	private TreeSet<Tweets> t; //Declaration du TreeSet qui va stocker les Tweets
+	private ArrayList<Tweets> tw;
 	
 	//Initialisation du TreeSet
 	public void initialise() {
@@ -32,7 +36,7 @@ public class BaseDeTweets {
 		this.t = ts;
 	}
 	
-	
+	//Accesseur
 	public TreeSet<Tweets> getT() {
 		return t;
 	}
@@ -42,6 +46,12 @@ public class BaseDeTweets {
 			
 		t.add(n);
 	}
+	
+	//Methode d'ajout d'un Tweets dans la base
+		public void ajouteAL(Tweets n) {
+
+			tw.add(n);
+		}
 	
 	//Affichage de la base de Tweets
 	public void afficher() {
@@ -105,6 +115,7 @@ public class BaseDeTweets {
 		}	
 	}
 	
+	
 	//Affiche les tweets avec leurs numéros pour pouvoir les supprimer par exemple
 	public void afficher_num() {
 		
@@ -114,7 +125,7 @@ public class BaseDeTweets {
 		while (it.hasNext())
 		{
 			Tweets t = (Tweets)(it.next());
-			System.out.println(i + " : " + t.getContent());
+			System.out.println(i + " : " + t);
 			i++;
 		}
 
@@ -148,58 +159,58 @@ public class BaseDeTweets {
 	public int nb_tweets() {
 		return t.size();
 	}
-	
+
 	//Retourne le tableau des 3 utilisateurs les plus populaires (qui sont le plus retweetés)
 	public ArrayList populaires() {
 		
 		ArrayList<String> userRtTab = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
-		
+		ArrayList<UtilisateursRt> populaires = new ArrayList<UtilisateursRt>(); //Stock les utilisateurs avec leur nombre de RT
 		Iterator it = t.iterator();
 	
-		//On parcourt le TreeSet pour récupérer les utilisateurs retweeté et les stocker dans une chaîne de caractères
+		//On parcourt le TreeSet pour récupérer les utilisateurs retweeté et les stocker dans un ArrayList
 		while (it.hasNext()) {
 			Tweets t = (Tweets)(it.next());
 			if(t.isRt()) {
 				userRtTab.add(t.getIdUserRt().toUpperCase());
 			}
 		}
-		System.out.println(userRtTab);
-		String max; //Chaîne de caractète qui stockera l'utilisateur qui apparaît le plus de fois dans le tableau UserRtTab
-		ArrayList<String> populaires = new ArrayList<String>(); //Stock les trois utilisateurs les plus populaires
+		//System.out.println(userRtTab);
+		
 		//Pour éviter les erreurs de liste nulle on remplie la liste de vide
 		for(int c = 0; c < userRtTab.size(); c++) {
-			populaires.add("");
+			UtilisateursRt urt = new UtilisateursRt("", 0);
+			populaires.add(urt);
 		}
-		System.out.println(populaires);
+		//System.out.println(populaires);
+		 
+		
 		int k = 0;
 		while((k < userRtTab.size())) {
 			//On supprime l'utilisateur du tableau si il est déja compté parmi les plus populaires (présent dans troisPopulaires)
 			for(int i = 0; i < populaires.size(); i++) { 
+				UtilisateursRt u = (UtilisateursRt)populaires.get(i);
 				for(int j = 0; j < userRtTab.size(); j++){
 					//System.out.println(userRtTab);
 					//System.out.println(populaires);
-					if((userRtTab.get(j).toUpperCase()).compareTo(populaires.get(i).toUpperCase()) == 0) {
+					if((userRtTab.get(j).toUpperCase()).compareTo(u.getNom().toUpperCase()) == 0) {
 						userRtTab.remove(j);
 					}
 				}
 			}
 			//System.out.println(userRtTab);
 			
-			max = userRtTab.get(0); //max prend la valeur tu premier utilisateur stocké dans le tableau
-			//On parcourt le tableau pour trouver les trois utilisateurs retweetés qui apparaissent le plus 
+			//On parcourt l' ArrayList userRtTab afin de remplir l'ArrayList de UtilisateursRt contenant les utilisateurs et leurs nombre de RT
+			int o = 0;
 			for(int l = 0; l < userRtTab.size(); l++) { 
-				//Si l'utilisateur i a une occurrence supérieure à max 
-				if(nb_occurrence(userRtTab, max) < nb_occurrence(userRtTab, userRtTab.get(l))) {
-					//System.out.println(nb_occurrence(userRtTab, max));
-					//System.out.println(nb_occurrence(userRtTab, userRtTab.get(i)));
-					//max prend la valeur de l'utilisateur i
-					max = userRtTab.get(l);
-				}
+				o = nb_occurrence(userRtTab, userRtTab.get(l));
+				UtilisateursRt user = new UtilisateursRt(userRtTab.get(l), o);
+				System.out.println(user.getNom() + " " + o);
+				populaires.add(user);
 			}
-			populaires.set(k, max);
-			System.out.println("k = "+ k + " populaires = " + populaires);
+			//System.out.println("k = "+ k + " populaires = " + populaires);
 			k++;
 		}
+		//On retourne un ArrayList contenat les utilisateurs du plus populaire au moins populaire
 		 return populaires;
 	}
 	
@@ -220,11 +231,36 @@ public class BaseDeTweets {
 		return occurrence;
 	}
 	
+	//Fréquence des hashtag
+	public void frequence_hashtag() {
+		
+		ArrayList<String> tweet = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
+		
+		Iterator it = t.iterator();
+	
+		//On parcourt le TreeSet pour récupérer les utilisateurs retweeté et les stocker dans une chaîne de caractères
+		while (it.hasNext()) {
+			Tweets t = (Tweets)(it.next());
+			if(t.isRt()) {
+				tweet.add(t.getContent());
+			}
+		}
+		
+	}
+	
 	//Chargement du fichier texte dans un objet BaseDeTweets
 	public BaseDeTweets lire(String file) {
 		
 		BaseDeTweets bdt = new BaseDeTweets(); //Base qui contiendra les tweets du fichier
 		String line; //Pour parcourir les lignes du fichier
+		String[] elt;
+		String idTweet;
+		String idUser;
+        String date;
+        String[] date_sansdecimale;
+        String d;
+        String content;
+        String idUserRt = "";
 		
 		//Initialisation de la base
 		bdt.initialise();
@@ -239,22 +275,35 @@ public class BaseDeTweets {
 	        	//System.out.println(line);
 	        	//On sépare les différents éléments du Tweet et on les stocke dans le tableau elt
 	        	
-	        	String[] elt = line.split("\t");
+	        	elt = line.split("\t");
 	        	
 	            //On stock chaque élément de elt dans les variables correspondantes pour pouvoir créer l'objet Tweets
-	        	String idTweet = elt[0];
-	            String idUser = elt[1];
-	            
+	        	if(elt[0] != null) {
+	        		idTweet = elt[0];
+	        	} else {
+	        		idTweet = "inconnu";
+	        	}
+	        	if(elt[1] != null) {
+	        		idUser = elt[1];
+	        	} else {
+	        		idUser = "inconnu";
+	        	}
+	                        
 	            //On stock la date dans un autre tableau de la même manière que précédemment pour pouvoir supprimer les décimales des secondes
-	            String date = elt[2];
-	            String[] date_sansdecimale = date.split("\\.");
-	            String d = date_sansdecimale[0];
+        		date = elt[2];
+	            date_sansdecimale = date.split("\\.");
+	            d = date_sansdecimale[0];
 	            //On converti la chaîne de caractères en LocalDateTime au bon format
 	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	            LocalDateTime formatDateTime = LocalDateTime.parse(d, formatter);
+	        	
+	        	
+	        	if(elt[3] != null) {
+	        		content = elt[3];
+	        	} else {
+	        		content = "-";
+	        	}
 	            
-	            String content = elt[3];
-	            String idUserRt = "";
 	            //Si le tweet est un retweet alors on récupère l'id de l'utilisateur retweeté
 	            if(elt.length > 4) {
 	            	idUserRt = elt[4];
@@ -277,11 +326,9 @@ public class BaseDeTweets {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return bdt;
-		}
-		
-		
+		}		
 	}
-		
+	
 	//Enregistrer la base dans un fichier objet
 	public void sauvegarder_bdt(String file) {
 		
@@ -319,12 +366,23 @@ public class BaseDeTweets {
 			}
 	}
 	
+	
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 	}
 	
-	
-	
+	public ObservableList<Tweets> getTweets(){
+		
+		ObservableList<Tweets> tweets = FXCollections.observableArrayList();
+		Iterator it = t.iterator();
+		//On parcourt le TreeSet
+		while (it.hasNext()) {
+			Tweets tweet = (Tweets)(it.next());
+			tweets.add(tweet);
+		}
+		
+		return tweets;
+	}
 	
 	
 }
