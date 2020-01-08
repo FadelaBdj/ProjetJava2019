@@ -16,13 +16,13 @@ public class main {
 		/*Scanner scan = new Scanner(System.in);
 		System.out.print("Fichier texte contenant les tweets : ");
 		String fic = scan.nextLine();*/
-		t = new BaseDeTweets();
-		t = t.lire("climat2.txt");
+		//t = new BaseDeTweets();
+		//t = t.lire("climat2.txt");
 		//t.sauvegarder_bdt("save_climat2.bat");	
 		//TreeSet<Tweets> ts = t.lire_bdt("save_climat2.bat");
 		//t.setTreeSet(ts);
 		//t.afficherAL();
-		t.afficher_num();
+		//t.afficher_num();
 		/*System.out.print("Fichier bat dans lequel sauvegarder la base de tweets : ");
 		String fic2 = scan.nextLine();
 
@@ -33,9 +33,9 @@ public class main {
 		//t.afficher();
 		//System.out.println("---------- RECHERCHE -----------");
 		//t.recherche("_miss_ives_");
-		System.out.println("---------- NB DE TWEETS -----------");
+		//System.out.println("---------- NB DE TWEETS -----------");
 		//System.out.println("Il y a " + t.nb_tweetsAL() + " tweets dans la base");
-		System.out.println("---------- TABLEAU -----------");
+		//System.out.println("---------- TABLEAU -----------");
 		//System.out.println(t.populaires());
 		/*
 		int[] occ = {6,7,2,5,3};

@@ -17,7 +17,6 @@ public class Fenetre extends Application {
 	Stage window;
 	TableView<Tweets> table;
 	private static BaseDeTweets t;
-	public static int c = 0;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -29,7 +28,7 @@ public class Fenetre extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("My title");
+			primaryStage.setTitle("Base de tweets");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

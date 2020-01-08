@@ -6,8 +6,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="197.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+<AnchorPane prefHeight="455.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
-      <Button layoutX="125.0" layoutY="79.0" mnemonicParsing="false" onAction="#genererTweets" text="Charger les tweets" />
+      <Button layoutX="110.0" layoutY="46.0" mnemonicParsing="false" onAction="#genererTweets" text="Charger les tweets" />
+      <TableView fx:id="table" layoutX="60.0" layoutY="124.0" prefHeight="274.0" prefWidth="775.0">
+        <!-- <columns>
+         <TableColumn fx:id="colIdTweet" prefWidth="78.0" text="ID" />
+          <TableColumn fx:id="colIdUser" prefWidth="110.0" text="Utilisateur" />
+            <TableColumn fx:id="colDate" minWidth="100" prefWidth="62.0" text="Date" />
+            <TableColumn fx:id="colContent" prefWidth="400" text="Tweet" />
+            <TableColumn fx:id="colIdUserRt" prefWidth="163.0" text="Utilisateur retweeté" />
+        </columns>-->
+      </TableView>
    </children>
 </AnchorPane>
