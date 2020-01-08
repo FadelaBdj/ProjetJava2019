@@ -376,6 +376,14 @@ public class BaseDeTweets {
 		
 		BaseDeTweets bdt = new BaseDeTweets(); //Base qui contiendra les tweets du fichier
 		String line; //Pour parcourir les lignes du fichier
+		String[] elt;
+		String idTweet;
+		String idUser;
+        String date;
+        String[] date_sansdecimale;
+        String d;
+        String content;
+        String idUserRt = "";
 		
 		//Initialisation de la base
 		bdt.initialise();
@@ -390,22 +398,35 @@ public class BaseDeTweets {
 	        	//System.out.println(line);
 	        	//On sépare les différents éléments du Tweet et on les stocke dans le tableau elt
 	        	
-	        	String[] elt = line.split("\t");
+	        	elt = line.split("\t");
 	        	
 	            //On stock chaque élément de elt dans les variables correspondantes pour pouvoir créer l'objet Tweets
-	        	String idTweet = elt[0];
-	            String idUser = elt[1];
-	            
+	        	if(elt[0] != null) {
+	        		idTweet = elt[0];
+	        	} else {
+	        		idTweet = "inconnu";
+	        	}
+	        	if(elt[1] != null) {
+	        		idUser = elt[1];
+	        	} else {
+	        		idUser = "inconnu";
+	        	}
+	                        
 	            //On stock la date dans un autre tableau de la même manière que précédemment pour pouvoir supprimer les décimales des secondes
-	            String date = elt[2];
-	            String[] date_sansdecimale = date.split("\\.");
-	            String d = date_sansdecimale[0];
+        		date = elt[2];
+	            date_sansdecimale = date.split("\\.");
+	            d = date_sansdecimale[0];
 	            //On converti la chaîne de caractères en LocalDateTime au bon format
 	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	            LocalDateTime formatDateTime = LocalDateTime.parse(d, formatter);
+	        	
+	        	
+	        	if(elt[3] != null) {
+	        		content = elt[3];
+	        	} else {
+	        		content = "-";
+	        	}
 	            
-	            String content = elt[3];
-	            String idUserRt = "";
 	            //Si le tweet est un retweet alors on récupère l'id de l'utilisateur retweeté
 	            if(elt.length > 4) {
 	            	idUserRt = elt[4];

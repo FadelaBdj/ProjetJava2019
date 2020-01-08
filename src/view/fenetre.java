@@ -15,6 +15,7 @@ public class fenetre extends Application {
 	Stage window;
 	TableView<Tweets> table;
 	private static BaseDeTweets t;
+	public static int c = 0;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -25,11 +26,6 @@ public class fenetre extends Application {
 		
 		window = primaryStage;
 		window.setTitle("Base de tweets");
-		
-		//Colonne cpt
-		TableColumn<Tweets, String> colCpt = new TableColumn<>("Num");
-		colCpt.setMinWidth(50);
-		colCpt.setCellValueFactory(new PropertyValueFactory<>("cpt"));
 				
 		//Colonne idTweet
 		TableColumn<Tweets, String> colIdTweet = new TableColumn<>("ID");
@@ -61,7 +57,7 @@ public class fenetre extends Application {
 		
 		table = new TableView<>();
 		table.setItems(t.getTweets());
-		table.getColumns().addAll(colCpt, colIdTweet, colIdUser, colDate, colContent, colIdUserRt);
+		table.getColumns().addAll(colIdTweet, colIdUser, colDate, colContent, colIdUserRt);
 		
 		VBox vBox = new VBox();
 		vBox.getChildren().addAll(table);
