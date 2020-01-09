@@ -17,8 +17,6 @@ public class Fenetre extends Application {
 	//Fenêtre principale
 	
 	Stage window;
-	TableView<Tweets> table;
-	private static BaseDeTweets t;
 	
 	public static void main(String[] args) {
 		launch(args);

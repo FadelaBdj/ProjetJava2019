@@ -49,12 +49,6 @@ public class BaseDeTweets {
 		t.add(n);
 	}
 	
-	//Methode d'ajout d'un Tweets dans la base
-		public void ajouteAL(Tweets n) {
-
-			tw.add(n);
-		}
-	
 	//Affichage de la base de Tweets
 	public void afficher() {
 		
@@ -135,10 +129,10 @@ public class BaseDeTweets {
 	
 	//Supprimer un tweet de la base
 	//Entrée : numéro du tweet à supprimer 
-	public void supprimer(double num) {
+	public void supprimer(int num) {
 		
 		Iterator it = t.iterator();
-		double i = 1;
+		int i = 1;
 		//On parcourt le TreeSet tant qu'il y'a un élément
 		//Si i vaut -1 cela veut dire que l'élément a été supprimé donc on sort de la boucle
 		while (it.hasNext() && i != -1)
@@ -237,9 +231,7 @@ public class BaseDeTweets {
 		//On récupère les contenus des tweets 
 		while (it.hasNext()) {
 			Tweets t = (Tweets)(it.next());
-			if(t.isRt()) {
-				contenu.add(t.getContent());
-			}
+			contenu.add(t.getContent());
 		}
 		
 		int i;
@@ -420,23 +412,6 @@ public class BaseDeTweets {
 		}
 		
 		return tweets;
-	}
-	
-	//Fonction permettant de générer la liste des tweets dans un TableView
-	//On utilise une ObservableList
-	public ObservableList<UtilisateursRt> getUsersRt(){
-		
-		ArrayList usersList = populaires();
-		int i;
-		
-		ObservableList<UtilisateursRt> users = FXCollections.observableArrayList();
-		
-		//On parcourt le TreeSet
-		for(i = 0; i < usersList.size(); i++) {
-			users.add((UtilisateursRt)usersList.get(i));
-		}
-		
-		return users;
 	}
 	
 	//Fonction permettant de générer la liste des utilisateurs avec leur nombre de RT dans un graphe nuage de points (Scatter Chart)
