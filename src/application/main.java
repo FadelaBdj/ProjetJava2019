@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.TreeSet;
 
 public class main {
 	
@@ -11,11 +13,38 @@ public class main {
 	
 	public static void main(String[] args) {
 		
+		/*Scanner scan = new Scanner(System.in);
+		System.out.print("Fichier texte contenant les tweets : ");
+		String fic = scan.nextLine();*/
 		t = new BaseDeTweets();
-		t.initialise();
-		t.lire("climat.txt");
-		//t.recherche("fhjgfjfgj");
+		t = t.lire("climat3.txt");
+		//t.sauvegarder_bdt("save_climat2.bat");	
+		//TreeSet<Tweets> ts = t.lire_bdt("save_climat2.bat");
+		//t.setTreeSet(ts);
+		//t.afficherAL();
+		t.afficher_num();
+		/*System.out.print("Fichier bat dans lequel sauvegarder la base de tweets : ");
+		String fic2 = scan.nextLine();
+
+		t = new BaseDeTweets();
+		t.lire(fic1, fic2);
+		TreeSet<Tweets> ts = t.lire_bdt(fic2);
+		t.lire_bdt("base_de_tweets.bat");*/
 		//t.afficher();
+		//System.out.println("---------- RECHERCHE -----------");
+		//t.recherche("_miss_ives_");
+		//System.out.println("---------- NB DE TWEETS -----------");
+		//System.out.println("Il y a " + t.nb_tweetsAL() + " tweets dans la base");
+		System.out.println("---------- POPULARITE -----------");
+		System.out.println(t.populaires());
+		/*
+		int[] occ = {6,7,2,5,3};
+		Arrays.sort(occ);
+		for(int i = 1; i < occ.length; i++) {
+			System.out.println(occ[i]);
+		}*/
+		
+		
 		
 		
 		

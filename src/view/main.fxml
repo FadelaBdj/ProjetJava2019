@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="468.0" prefWidth="922.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+   <children>
+      <Button layoutX="110.0" layoutY="46.0" mnemonicParsing="false" onAction="#genererTweets" text="Charger les tweets" />
+      <TableView fx:id="table" layoutX="60.0" layoutY="124.0" prefHeight="274.0" prefWidth="775.0">
+        <!-- <columns>
+         <TableColumn fx:id="colIdTweet" prefWidth="78.0" text="ID" />
+          <TableColumn fx:id="colIdUser" prefWidth="110.0" text="Utilisateur" />
+            <TableColumn fx:id="colDate" minWidth="100" prefWidth="62.0" text="Date" />
+            <TableColumn fx:id="colContent" prefWidth="400" text="Tweet" />
+            <TableColumn fx:id="colIdUserRt" prefWidth="163.0" text="Utilisateur retweeté" />
+        </columns>-->
+      </TableView>
+      <Label fx:id="lNbTweets" layoutX="448.0" layoutY="52.0" prefHeight="39.0" prefWidth="236.0" />
+      <Button fx:id="bPopulaires" layoutX="91.0" layoutY="407.0" mnemonicParsing="false" onAction="#bPopulaires" prefHeight="39.0" prefWidth="142.0" />
+   </children>
 </AnchorPane>
-

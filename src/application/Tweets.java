@@ -7,32 +7,34 @@ import java.time.format.DateTimeFormatter;
 public class Tweets implements Comparable, Serializable {
 
 	
-	private double idTweet; //Identifiant du tweet
+	private String idTweet; //Identifiant du tweet
 	private String idUser, idUserRt; //Identifiant de l'utilisateur et de l'utilisateur retweeté
 	private LocalDateTime dateTweet; //Date du tweet
 	private String content; //Contenu du tweet
 	private boolean rt = false; //Indique si le tweet est un retweet
+	private static int cpt = 0;
 	
-	public Tweets(double idTweet, String idUser, LocalDateTime dateTweet, String content, String idUserRt) {
+	public Tweets(String idTweet, String idUser, LocalDateTime dateTweet, String content, String idUserRt) {
 		
 		setIdTweet(idTweet);
 		setIdUser(idUser);
 		setDateTweet(dateTweet);
 		setContent(content);
 		setIdUserRt(idUserRt);
-		if(idUserRt != null) {
+		//On défini la variable rt seulement si on trouve un id d'utilisateur retweeté
+		if(idUserRt != "") {
 			rt = true;
 		}
-		
+		cpt = cpt;
 	}
 
 	//Accesseurs et mutateurs pour avoir accès aux attributs 
 	
-	public double getIdTweet() {
+	public String getIdTweet() {
 		return idTweet;
 	}
 
-	public void setIdTweet(double idTweet) {
+	public void setIdTweet(String idTweet) {
 		this.idTweet = idTweet;
 	}
 
@@ -84,8 +86,10 @@ public class Tweets implements Comparable, Serializable {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = getDateTweet().format(formatter);
+        cpt++;
         
-        String result =  "Id Tweet : " + getIdTweet() + "\n";
+        String result =  "Num : " + cpt + "\n";
+        result += "Id Tweet : " + getIdTweet() + "\n";
         result +=  "Utilisateur : " + getIdUser() + "\n";
         result +=  "Date du tweet : " + formattedDateTime + "\n";
         result +=  "Contenu du tweet : " + getContent() + "\n";
@@ -102,10 +106,9 @@ public class Tweets implements Comparable, Serializable {
 	public int compareTo(Object o) {
 		
 		Tweets a_comparer = (Tweets)o;
-		String tweet_a_comparer = Double.toString(a_comparer.getIdTweet());
-		if(Double.toString(getIdTweet()).compareTo(tweet_a_comparer) < 0)
+		if(getIdTweet().compareTo(getIdTweet()) < 0)
 			return -1;
-		else if (Double.toString(getIdTweet()).compareTo(tweet_a_comparer) > 0)
+		else if (getIdTweet().compareTo(getIdTweet()) > 0)
 			return 1;
 		else
 			if (getDateTweet().compareTo(a_comparer.getDateTweet())<0) return -1;
