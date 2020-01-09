@@ -163,7 +163,7 @@ public class BaseDeTweets {
 	}
 
 	//Retourne le tableau des 3 utilisateurs les plus populaires (qui sont le plus retweetés)
-	public ArrayList populaires() {
+	public ArrayList<UtilisateursRt> populaires() {
 		
 		ArrayList<String> userRtTab = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
 		ArrayList<UtilisateursRt> populaires = new ArrayList<UtilisateursRt>(); //Stock les utilisateurs avec leur nombre de RT
@@ -224,20 +224,64 @@ public class BaseDeTweets {
 	}
 	
 	//Fréquence des hashtag
-	public void frequence_hashtag() {
+	//Retourne un ArrayList de Hashtags (hashtag et sa fréquence)
+	public ArrayList<Hashtags> frequence_hashtag() {
 		
-		ArrayList<String> tweet = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
+		ArrayList<String> contenu = new ArrayList<String>(); //Stock tous les utilisateurs retweetés (On utilise un ArrayList car la taille n'est pas fixe)
+		String[] mots;
+		ArrayList<String> hashtags = new ArrayList<String>(); //Stock les hashtags
+		ArrayList<Hashtags> listeHt = new ArrayList<Hashtags>(); //Stock les hashtags avec leur fréquence
 		
 		Iterator it = t.iterator();
 	
-		//On parcourt le TreeSet pour récupérer les utilisateurs retweeté et les stocker dans une chaîne de caractères
+		//On récupère les contenus des tweets 
 		while (it.hasNext()) {
 			Tweets t = (Tweets)(it.next());
 			if(t.isRt()) {
-				tweet.add(t.getContent());
+				contenu.add(t.getContent());
 			}
 		}
 		
+		int i;
+		//On rempli la liste des hashtags présents dans la base de tweet
+		//On parcourt la liste des contenus des tweets
+		for(i = 0; i < contenu.size(); i++) {
+			//On sépare le contenu en mots
+			mots = contenu.get(i).split(" ");
+			//On ajoute le mot à la liste des hashtags si celui-ci commence par "#"
+	        for(int j = 0; j < mots.length; j++) {
+				if(mots[j].startsWith("#")) {
+					hashtags.add(mots[j].toUpperCase());
+				}
+			}
+		}
+		System.out.println(hashtags);
+		int occHt;
+		float frequenceHt;
+		boolean trouve = false;
+		//Pour chaque hashtag on créer un objet Hashtag afin d'y stocker le hashtag et sa fréquence
+		for(int j = 0; j < hashtags.size(); j++) {
+			
+			for(int k = 0; k < listeHt.size(); k++) {
+				Hashtags h = listeHt.get(k);
+				if((h.getHashtag().toUpperCase()).compareTo(hashtags.get(j).toUpperCase()) == 0) {
+					trouve = true;
+				}
+			}
+			//Si le hashtag a déjà été ajouté à la liste des Hashtags avec leurs fréquences on ne l'ajoute pas
+			if(!trouve) {
+				occHt = nb_occurrence(hashtags, hashtags.get(j).toUpperCase());
+				System.out.println(occHt);
+				frequenceHt = (float) occHt / hashtags.size(); 
+				System.out.println(frequenceHt);
+				Hashtags ht = new Hashtags(hashtags.get(j).toUpperCase(), frequenceHt);				
+				listeHt.add(ht);
+				System.out.println(ht);
+			}
+			
+			trouve = false;
+		}
+		return listeHt;
 	}
 	
 	//Chargement du fichier texte dans un objet BaseDeTweets
@@ -378,6 +422,8 @@ public class BaseDeTweets {
 		return tweets;
 	}
 	
+	//Fonction permettant de générer la liste des tweets dans un TableView
+	//On utilise une ObservableList
 	public ObservableList<UtilisateursRt> getUsersRt(){
 		
 		ArrayList usersList = populaires();
@@ -393,11 +439,14 @@ public class BaseDeTweets {
 		return users;
 	}
 	
+	//Fonction permettant de générer la liste des utilisateurs avec leur nombre de RT dans un graphe nuage de points (Scatter Chart)
+	//On utilise une ObservableList
+	//Source : http://www.java2s.com/Code/Java/JavaFX/ScatterChartfromObservableListXYChartSeriesStringDouble.htm
 	public ObservableList<XYChart.Series<String, Integer>> getChartData() {
 		
 	    String nom;
 	    Integer nbRt;
-		ArrayList usersList = populaires();
+		ArrayList<UtilisateursRt> usersList = populaires();
 		int i;
 	      
 		ObservableList<XYChart.Series<String, Integer>> answer = FXCollections.observableArrayList();
@@ -409,7 +458,7 @@ public class BaseDeTweets {
 			UtilisateursRt u = (UtilisateursRt)usersList.get(i);
 			nom = u.getNom();
 			nbRt = u.getNbRt();
-			serie.getData().add(new XYChart.Data(nom, nbRt));
+			serie.getData().add(new XYChart.Data<String, Integer>(nom, nbRt));
 		}
 		answer.addAll(serie);
 		return answer;

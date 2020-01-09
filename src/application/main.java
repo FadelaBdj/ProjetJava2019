@@ -17,7 +17,7 @@ public class main {
 		System.out.print("Fichier texte contenant les tweets : ");
 		String fic = scan.nextLine();*/
 		t = new BaseDeTweets();
-		t = t.lire("climat3.txt");
+		t = t.lire("climat2.txt");
 		//t.sauvegarder_bdt("save_climat2.bat");	
 		//TreeSet<Tweets> ts = t.lire_bdt("save_climat2.bat");
 		//t.setTreeSet(ts);
@@ -35,8 +35,10 @@ public class main {
 		//t.recherche("_miss_ives_");
 		//System.out.println("---------- NB DE TWEETS -----------");
 		//System.out.println("Il y a " + t.nb_tweetsAL() + " tweets dans la base");
-		System.out.println("---------- POPULARITE -----------");
-		System.out.println(t.populaires());
+		//System.out.println("---------- POPULARITE -----------");
+		//System.out.println(t.populaires());
+		System.out.println("---------- FREQUENCE HASHTAG -----------");
+		t.frequence_hashtag();;
 		/*
 		int[] occ = {6,7,2,5,3};
 		Arrays.sort(occ);

@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="510.0" prefWidth="824.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PopulariteController">
+<AnchorPane prefHeight="593.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PopulariteController">
    <children>
-      <ScatterChart fx:id="nuagePoints" layoutX="55.0" layoutY="36.0" prefHeight="399.0" prefWidth="720.0" title="Popularité des utilisateurs ">
+      <ScatterChart fx:id="nuagePoints" layoutX="49.0" layoutY="34.0" prefHeight="399.0" prefWidth="720.0" title="Popularité des utilisateurs ">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis label="Utilisateurs" side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis label="Nombre de RT" side="LEFT" />
         </yAxis>
       </ScatterChart>
-      <Button fx:id="bAfficher" layoutX="372.0" layoutY="435.0" mnemonicParsing="false" onAction="#bAfficher" text="Afficher" />
+      <Button fx:id="bAfficher" layoutX="288.0" layoutY="519.0" mnemonicParsing="false" onAction="#bAfficher" text="Afficher ke nuage de points" />
    </children>
 </AnchorPane>

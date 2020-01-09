@@ -19,6 +19,10 @@ import javafx.stage.Stage;
 
 public class MainController {
 	
+	/*
+	 * Controlleur des boutons de la fenêtre principale
+	 */
+	
 	@FXML //Pour faire le lien avec le fichier FXML
 	private TableView<Tweets> table;
 	@FXML
@@ -30,6 +34,7 @@ public class MainController {
 	
 	private static BaseDeTweets t;
 	
+	//Bouton générer les tweets
 	public void genererTweets(ActionEvent event) {
 		
 		/*window = new Stage();
@@ -61,7 +66,7 @@ public class MainController {
 		colIdUserRt.setCellValueFactory(new PropertyValueFactory<>("idUserRt"));
 		
 		t = new BaseDeTweets();
-		t = t.lire("climat3.txt");
+		t = t.lire("climat2.txt");
 		
 		//table = new TableView<>();
 		table.setItems(t.getTweets());
@@ -71,14 +76,7 @@ public class MainController {
 		lNbTweets.setText(nb_tweets);
 		bPopulaires.setText("Popularité des utilisateurs");
 		
-		/*Button nbTweets = new Button("Nombre de tweets");
-		nbTweets.setText("Nombre de tweets");
-		
-		Button popularite = new Button("Popularité des utilisateurs");
-		popularite.setText("Popularité des utilisateurs");
-		
-		Button frequenceHtag = new Button("Fréquence des Hashtags");
-		frequenceHtag.setText("Fréquence des Hashtags");
+		/*
 		
 		VBox vBox = new VBox();
 		vBox.getChildren().addAll(table, nbTweets, popularite, frequenceHtag);
@@ -89,6 +87,7 @@ public class MainController {
 		
 	}
 	
+	//Bouton Afficher la popularité des utilisateurs
 	public void bPopulaires(ActionEvent event) {
 		
 		window = new Stage();
