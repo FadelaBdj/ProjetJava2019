@@ -15,12 +15,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class PopulariteController {
 	
+	/*
+	 * Controlleur pour la fenêtre contenant le nuage de points
+	 */
+	
     @FXML
     private ScatterChart<String, Integer> nuagePoints;
 
 	private BaseDeTweets b;
 	private ArrayList a;
 	
+	//Bouton afficher le nuage de points
 	public void bAfficher(ActionEvent event) {
 		
 		//nuagePoints.getData().clear();

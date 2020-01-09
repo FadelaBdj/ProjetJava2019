@@ -16,6 +16,6 @@
           <NumberAxis label="Nombre de RT" side="LEFT" />
         </yAxis>
       </ScatterChart>
-      <Button fx:id="bAfficher" layoutX="288.0" layoutY="519.0" mnemonicParsing="false" onAction="#bAfficher" text="Afficher ke nuage de points" />
+      <Button fx:id="bAfficher" layoutX="288.0" layoutY="519.0" mnemonicParsing="false" onAction="#bAfficher" text="Afficher le nuage de points" />
    </children>
 </AnchorPane>
